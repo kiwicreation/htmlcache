@@ -24,10 +24,18 @@ if (!function_exists('htmlcache_filename')) {
         if (empty($host) && !empty($_SERVER['SERVER_NAME'])) {
             $host = $_SERVER['SERVER_NAME'];
         }
+        
+        try {
+            session_name('CraftSessionId');
+            @session_start();
+            $user = $_SESSION[reset(array_filter(array_keys($_SESSION), function ($key) { return substr($key, -6) === '__name'; }))];
+        } catch (\Exception $e) {
+            $user = '';
+        }
 
         $uri = $_SERVER['REQUEST_URI'];
 
-        $fileName = md5($protocol . $host . $uri) . '.html';
+        $fileName = md5($protocol . $user . $host . $uri) . '.html';
         if ($withDirectory) {
             $fileName = htmlcache_directory() . $fileName;
         }
