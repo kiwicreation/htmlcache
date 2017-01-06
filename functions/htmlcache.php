@@ -28,7 +28,7 @@ if (!function_exists('htmlcache_filename')) {
         try {
             session_name('CraftSessionId');
             @session_start();
-            $user = $_SESSION[reset(array_filter(array_keys($_SESSION), function ($key) { return substr($key, -6) === '__name'; }))];
+            $user = $_SESSION[@reset(array_filter(array_keys($_SESSION), function ($key) { return substr($key, -6) === '__name'; }))];
         } catch (\Exception $e) {
             $user = '';
         }
